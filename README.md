@@ -22,7 +22,7 @@ a ConfigMap format.
 
 ## Sources
 
-[Kubernetes ConfigMaps] (https://kubernetes.io/docs/concepts/configuration/configmap/)
+[Kubernetes ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)
 [Helm template](https://helm.sh/docs/chart_best_practices/templates/)
 
 ---
