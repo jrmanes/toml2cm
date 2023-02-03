@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func main() {
+func Run() {
 
 	filePath := flag.String("file", "./test.toml", "Toml file to convert to Kubernetes ConfigMap")
 	flag.Parse()
