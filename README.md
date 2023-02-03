@@ -22,8 +22,8 @@ a ConfigMap format.
 
 ## Sources
 
-[Kubernetes ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)
-[Helm template](https://helm.sh/docs/chart_best_practices/templates/)
+- [Kubernetes ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/)
+- [Helm template](https://helm.sh/docs/chart_best_practices/templates/)
 
 ---
 
