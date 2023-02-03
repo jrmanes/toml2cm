@@ -3,7 +3,7 @@
 ---
 
 ## Description
-Toml 2 ConfigMap is a tool that help us to migrate Toml files to [Kubernetes ConfigMaps] (https://kubernetes.io/docs/concepts/configuration/configmap/) in a 
+Toml 2 ConfigMap is a tool that help us to migrate Toml files to [Kubernetes ConfigMaps](https://kubernetes.io/docs/concepts/configuration/configmap/) in a 
 [Helm template](https://helm.sh/docs/chart_best_practices/templates/) way.
 
 This tools was created with the goal of migrating `toml` configurations to
