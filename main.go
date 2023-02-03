@@ -56,14 +56,18 @@ func Run() {
 }
 
 func formatLine(line, fileName string) string {
+	// find the = and cut the string from it
 	l := line[:strings.IndexByte(line, '=')]
 
+	// Clean the spaces
 	l = strings.ReplaceAll(l, " ", "")
+
+	// Replace the value of the variable to a Helm Template format
 	line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps."+fileName+"."+l+" | "+"default "+"\"")
 	line = line + "\"" + " | quote }}"
 
 	// example line
-	// broadcast-mode = {{ .Values.configMaps.client_toml.broadcast-mode | default "sync" | quote }}
+	// whatever = {{ .Values.configMaps.fileName_toml.whatever | default "sync" | quote }}
 	return line
 }
 
