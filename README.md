@@ -27,6 +27,21 @@ a ConfigMap format.
 
 ---
 
+## Requirements
+
+- Go: Install go
+
+
+## How to execute it?
+
+```go
+go run main.go --file=<fileName>
+// Example
+go run main.go --file=example.tml
+```
+
+---
+
 ## TODO
 
 - [ ] Add ConfigMap header
