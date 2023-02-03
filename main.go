@@ -39,8 +39,8 @@ func Run() {
 	// close the file when the function will finish
 	defer f.Close()
 
+	// Clean up the file name
 	fileNameCleaned := cleanUpFileName(*file)
-	fmt.Println("File Name: ", fileNameCleaned)
 
 	// Check line by line
 	for _, eachline := range txtlines {
@@ -48,18 +48,18 @@ func Run() {
 		eachline = spacesToText + eachline
 
 		if strings.Contains(eachline, "=") {
-			eachline = formatLine(eachline)
+			eachline = formatLine(eachline, fileNameCleaned)
 		}
 
 		fmt.Println(eachline)
 	}
 }
 
-func formatLine(line string) string {
+func formatLine(line, fileName string) string {
 	l := line[:strings.IndexByte(line, '=')]
 
 	l = strings.ReplaceAll(l, " ", "")
-	line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps.FILENAME."+l+" | "+"default "+"\"")
+	line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps."+fileName+"."+l+" | "+"default "+"\"")
 	line = line + "\"" + " | quote }}"
 
 	// example line
@@ -73,10 +73,6 @@ func cleanUpFileName(f string) string {
 	f = strings.ReplaceAll(f, ".", "_")
 	// change - to _ in the filename
 	f = strings.ReplaceAll(f, "-", "_")
-
-	fmt.Println("--------------------------")
-	fmt.Println(f)
-	fmt.Println("--------------------------")
 
 	return f
 }
