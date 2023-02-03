@@ -47,6 +47,7 @@ func Run() {
 		// add the spaces to the beginning of the line - yaml format
 		eachline = spacesToText + eachline
 
+		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
 			eachline = formatLine(eachline, fileNameCleaned)
 		}
@@ -55,6 +56,7 @@ func Run() {
 	}
 }
 
+// formatLine change the current format to Helm Template
 func formatLine(line, fileName string) string {
 	// find the = and cut the string from it
 	l := line[:strings.IndexByte(line, '=')]
@@ -80,6 +82,17 @@ func cleanUpFileName(f string) string {
 
 	return f
 }
+
+// changeFileFormat change the file extension from toml to yaml
+func changeFileFormat(f string) string {
+	// change - to _ in the filename
+	f = strings.ReplaceAll(f, "toml", "yaml")
+
+	return f
+}
+
+// writeToFile self description
+// func writeToFile() {}
 
 // main everything starts here!
 func main() {
