@@ -91,8 +91,23 @@ func changeFileFormat(f string) string {
 	return f
 }
 
+// createFile creates the file in an specific path
+func createFile(f string) {
+	// add the file extension
+	f = changeFileFormat(f)
+
+	_, err := os.Create(f)
+	if err != nil {
+		fmt.Println("ERROR creating the file: ", f, " ->", err)
+	}
+}
+
 // writeToFile self description
-// func writeToFile() {}
+func writeToFile(f string) {
+	// create or verifyt that the file exists
+	createFile(f)
+
+}
 
 // main everything starts here!
 func main() {
