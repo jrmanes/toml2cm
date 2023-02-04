@@ -53,6 +53,7 @@ func Run() {
 		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
 			eachline = formatLine(eachline, fileNameCleaned)
+			eachline = strings.ReplaceAll(eachline, "-", "_")
 		}
 
 		eachline = eachline + "\n"
@@ -89,6 +90,11 @@ func formatLine(line, fileName string) string {
 		"= ",
 		" = {{ .Values.configMaps."+fileName+"."+l+" | "+"default ")
 	line = line + " | quote }}"
+
+	// if contains empty array, replace it
+	if strings.Contains(line, "[]") {
+		line = strings.ReplaceAll(line, "[]", "\"[]\"")
+	}
 
 	// example line
 	// whatever = {{ .Values.configMaps.fileName_toml.whatever | default "sync" | quote }}
