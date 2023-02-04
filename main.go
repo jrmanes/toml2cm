@@ -144,8 +144,8 @@ func CreateFullPath(f string) error {
 	return nil
 }
 
-// createFile creates the file in an specific path
-func createFile(f string) {
+// CreateFile creates the file in an specific path
+func CreateFile(f string) {
 	// create the outputs folder before write the file
 	err1 := CreateFullPath(f)
 	if err1 != nil {
@@ -174,7 +174,7 @@ func WriteToFile(f string, content []string) {
 	}
 
 	// create or verifyt that the file exists
-	createFile(f)
+	CreateFile(f)
 
 	// Open the file
 	file, err := os.OpenFile(outputPath+f, os.O_APPEND|os.O_WRONLY, 0644)
