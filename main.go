@@ -142,7 +142,7 @@ func writeToFile(f string, content []byte) {
 	}
 
 	file.Close()
-
+}
 
 // main everything starts here!
 func main() {
