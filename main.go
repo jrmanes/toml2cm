@@ -42,6 +42,8 @@ func Run() {
 	// Clean up the file name
 	fileNameCleaned := cleanUpFileName(*file)
 
+	var fileContent []byte
+
 	// Check line by line
 	for _, eachline := range txtlines {
 		// add the spaces to the beginning of the line - yaml format
@@ -50,10 +52,20 @@ func Run() {
 		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
 			eachline = formatLine(eachline, fileNameCleaned)
-		}
 
-		fmt.Println(eachline)
+		}
+		// Here append the lines to the array in order to bulk the data
+		fileContent = append(fileContent, eachline...)
+
+		//fmt.Println(eachline)
 	}
+	// here is where we have to write the content to the new file, we've
+	// formated the lines that contains values
+	//fmt.Println(eachline)
+	fmt.Println(fileContent)
+
+	// TODO
+	writeToFile(fileNameCleaned, eachline)
 }
 
 // formatLine change the current format to Helm Template
@@ -65,8 +77,16 @@ func formatLine(line, fileName string) string {
 	l = strings.ReplaceAll(l, " ", "")
 
 	// Replace the value of the variable to a Helm Template format
-	line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps."+fileName+"."+l+" | "+"default "+"\"")
-	line = line + "\"" + " | quote }}"
+	// the following lines add the content between quotes, we don't really need
+	// it in that way. -> pending to review
+	//line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps."+fileName+"."+l+" | "+"default "+"\"")
+	//line = line + "\"" + " | quote }}"
+
+	line = strings.ReplaceAll(
+		line,
+		"= ",
+		" = {{ .Values.configMaps."+fileName+"."+l+" | "+"default ")
+	line = line + " | quote }}"
 
 	// example line
 	// whatever = {{ .Values.configMaps.fileName_toml.whatever | default "sync" | quote }}
@@ -103,9 +123,13 @@ func createFile(f string) {
 }
 
 // writeToFile self description
-func writeToFile(f string) {
+func writeToFile(f string, content []byte) {
 	// create or verifyt that the file exists
 	createFile(f)
+
+	//w := bufio.NewWriter(f, content)
+
+	//ioutil.
 
 }
 
