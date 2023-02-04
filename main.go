@@ -70,7 +70,7 @@ func Run() {
 
 		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
-			eachline = formatLine(eachline, fileNameCleaned)
+			eachline = FormatLine(eachline, fileNameCleaned)
 			eachline = strings.ReplaceAll(eachline, "-", "_")
 		}
 
