@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	// spacesToText yaml format spaces in a ConfigMap
-	spacesToText  = "    "
+	// spacesToTab yaml format spaces in a ConfigMap
+	spacesToTab   = "    "
 	outputPath    = "./outputs/"
 	configMapKind = `apiVersion: v1
 kind: ConfigMap
@@ -64,7 +64,7 @@ func Run() {
 	// Check line by line
 	for _, eachline := range txtlines {
 		// add the spaces to the beginning of the line - yaml format
-		eachline = spacesToText + eachline
+		eachline = spacesToTab + eachline
 
 		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
@@ -196,7 +196,6 @@ func writeToFile(f string, content []string) {
 			fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err)
 		}
 	}
-
 }
 
 // main everything starts here!
