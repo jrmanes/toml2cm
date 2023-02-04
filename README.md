@@ -37,7 +37,7 @@ a ConfigMap format.
 ```go
 go run *.go --file=<fileName>
 // Example
-go run *.go --file=example.toml
+go run *.go --file=example.tpml
 ```
 
 ---
