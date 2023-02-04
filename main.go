@@ -43,7 +43,7 @@ func Run() {
 	// Clean up the file name
 	fileNameCleaned := cleanUpFileName(*file)
 
-	var fileContent []byte
+	var fileContent []string
 
 	// Check line by line
 	for _, eachline := range txtlines {
@@ -56,7 +56,8 @@ func Run() {
 
 		}
 		// Here append the lines to the array in order to bulk the data
-		fileContent = append(fileContent, eachline...)
+		fileContent = append(fileContent, eachline)
+		fileContent = append(fileContent, "\n")
 
 		//fmt.Println(eachline)
 	}
@@ -131,14 +132,16 @@ func createFile(f string) {
 	// add the file extension
 	f = changeFileFormat(f)
 
-	_, err := os.Create(outputPath + f)
+	file, err := os.Create(outputPath + f)
 	if err != nil {
 		fmt.Println("ERROR creating the file: ", f, " ->", err)
 	}
+
+	defer file.Close()
 }
 
 // writeToFile self description
-func writeToFile(f string, content []byte) {
+func writeToFile(f string, content []string) {
 	// Change the file format to .yaml
 	f = changeFileFormat(f)
 
@@ -159,10 +162,20 @@ func writeToFile(f string, content []byte) {
 	defer file.Close()
 
 	// write the content to the file
-	_, err2 := file.Write(content)
-	if err2 != nil {
-		fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err2)
+	//size, err2 := file.Write(content)
+	//if err2 != nil {
+	//	fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err2)
+	//}
+
+	//fmt.Printf("Wrote bytes %d to file", size)
+
+	for _, val := range content {
+		_, err := file.WriteString(val)
+		if err != nil {
+			fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err)
+		}
 	}
+
 }
 
 // main everything starts here!
