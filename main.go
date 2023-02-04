@@ -11,8 +11,17 @@ import (
 
 var (
 	// spacesToText yaml format spaces in a ConfigMap
-	spacesToText = "    "
-	outputPath   = "./outputs/"
+	spacesToText  = "    "
+	outputPath    = "./outputs/"
+	configMapKind = `apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: CONFIGMAP_NAME
+{{- if .Values.namespace.enabled }}
+  namespace: {{ .Values.namespace.name | default "default" }}
+{{- end }}
+data:
+	`
 )
 
 // Run start the service here
@@ -45,6 +54,13 @@ func Run() {
 
 	var fileContent []string
 
+	// Add the Kubernetes ConfigMap structure at top
+	configMapKind = strings.ReplaceAll(configMapKind, "CONFIGMAP_NAME", fileNameCleaned)
+	fileContent = append(fileContent, configMapKind)
+	// Add the data
+	dataCM := "  " + *file + ": |" + "\n"
+	fileContent = append(fileContent, dataCM)
+
 	// Check line by line
 	for _, eachline := range txtlines {
 		// add the spaces to the beginning of the line - yaml format
@@ -67,7 +83,6 @@ func Run() {
 	//fmt.Println(eachline)
 	//fmt.Println(fileContent)
 
-	// TODO
 	writeToFile(fileNameCleaned, fileContent)
 }
 
