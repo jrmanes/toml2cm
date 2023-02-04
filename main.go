@@ -29,12 +29,16 @@ data:
 // Run start the service here
 func Run() {
 	// filePath path to the file that we'll scan
-	file := flag.String("file", "./test.toml", "Toml file to convert to Kubernetes ConfigMap")
+	file := flag.String("file", "", "Toml file to convert to Kubernetes ConfigMap")
 
 	flag.Parse()
 
+	ParseFiles(*file)
+}
+
+func ParseFiles(file string) {
 	// Open file
-	f, err := os.Open(*file)
+	f, err := os.Open(file)
 	if err != nil {
 		log.Fatalf("failed opening file: %s", err)
 	}
@@ -52,7 +56,7 @@ func Run() {
 	defer f.Close()
 
 	// Clean up the file name
-	fileNameCleaned := cleanUpFileName(*file)
+	fileNameCleaned := cleanUpFileName(file)
 
 	var fileContent []string
 
@@ -60,7 +64,7 @@ func Run() {
 	configMapKind = strings.ReplaceAll(configMapKind, "CONFIGMAP_NAME", fileNameCleaned)
 	fileContent = append(fileContent, configMapKind)
 	// Add the data
-	dataCM := "  " + *file + ": |" + "\n"
+	dataCM := "  " + file + ": |" + "\n"
 	fileContent = append(fileContent, dataCM)
 
 	// Check line by line
@@ -86,6 +90,7 @@ func Run() {
 	//fmt.Println(fileContent)
 
 	WriteToFile(fileNameCleaned, fileContent)
+
 }
 
 // FormatLine change the current format to Helm Template
