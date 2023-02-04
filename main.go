@@ -12,6 +12,7 @@ import (
 var (
 	// spacesToText yaml format spaces in a ConfigMap
 	spacesToText = "    "
+	outputPath   = "./outputs/"
 )
 
 // Run start the service here
@@ -111,12 +112,26 @@ func changeFileFormat(f string) string {
 	return f
 }
 
+// createFullPath create the full path to the outputs
+func createFullPath(f string) error {
+	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
+		os.MkdirAll(outputPath, 0644)
+	}
+	return nil
+}
+
 // createFile creates the file in an specific path
 func createFile(f string) {
+	// create the outputs folder before write the file
+	err1 := createFullPath(f)
+	if err1 != nil {
+		fmt.Println("ERROR creating the file: ", f, " ->", err1)
+	}
+
 	// add the file extension
 	f = changeFileFormat(f)
 
-	_, err := os.Create(f)
+	_, err := os.Create(outputPath + f)
 	if err != nil {
 		fmt.Println("ERROR creating the file: ", f, " ->", err)
 	}
@@ -127,21 +142,27 @@ func writeToFile(f string, content []byte) {
 	// Change the file format to .yaml
 	f = changeFileFormat(f)
 
+	// if file exsits, remove it first
+	if _, err := os.Stat(outputPath + f); err == nil {
+		os.Remove(outputPath + f)
+	}
+
 	// create or verifyt that the file exists
 	createFile(f)
 
 	// Open the file
-	file, err := os.OpenFile(f, os.O_APPEND|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(outputPath+f, os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("ERROR creating the file: ", f, " ->", err)
+		fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err)
 	}
 
+	defer file.Close()
+
+	// write the content to the file
 	_, err2 := file.Write(content)
 	if err2 != nil {
-		fmt.Println("ERROR creating the file: ", f, " ->", err2)
+		fmt.Println("ERROR creating the file: ", outputPath+f, " ->", err2)
 	}
-
-	file.Close()
 }
 
 // main everything starts here!
