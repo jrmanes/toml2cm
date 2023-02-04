@@ -53,11 +53,11 @@ func Run() {
 		// if line contains = that means it contains a variable + value
 		if strings.Contains(eachline, "=") {
 			eachline = formatLine(eachline, fileNameCleaned)
-
 		}
+
+		eachline = eachline + "\n"
 		// Here append the lines to the array in order to bulk the data
 		fileContent = append(fileContent, eachline)
-		fileContent = append(fileContent, "\n")
 
 		//fmt.Println(eachline)
 	}
@@ -105,8 +105,8 @@ func cleanUpFileName(f string) string {
 	return f
 }
 
-// changeFileFormat change the file extension from toml to yaml
-func changeFileFormat(f string) string {
+// ChangeFileExtension change the file extension from toml to yaml
+func ChangeFileExtension(f string) string {
 	// change - to _ in the filename
 	f = strings.ReplaceAll(f, "_toml", ".yaml")
 
@@ -130,7 +130,7 @@ func createFile(f string) {
 	}
 
 	// add the file extension
-	f = changeFileFormat(f)
+	f = ChangeFileExtension(f)
 
 	file, err := os.Create(outputPath + f)
 	if err != nil {
@@ -143,7 +143,7 @@ func createFile(f string) {
 // writeToFile self description
 func writeToFile(f string, content []string) {
 	// Change the file format to .yaml
-	f = changeFileFormat(f)
+	f = ChangeFileExtension(f)
 
 	// if file exsits, remove it first
 	if _, err := os.Stat(outputPath + f); err == nil {
