@@ -35,9 +35,9 @@ a ConfigMap format.
 ## How to execute it?
 
 ```go
-go run main.go --file=<fileName>
+go run *.go --file=<fileName>
 // Example
-go run main.go --file=example.tml
+go run *.go --file=example.toml
 ```
 
 ---

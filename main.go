@@ -11,18 +11,6 @@ import (
 var (
 	// spacesToTab yaml format spaces in a ConfigMap
 	spacesToTab = "    "
-	// outputPath outputs folder, where all the files will be stored
-	outputPath = "./outputs/"
-	// configMapKind this is the header of the file, based on a Kubernetes ConfigMap
-	configMapKind = `apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: CONFIGMAP_NAME
-{{- if .Values.namespace.enabled }}
-  namespace: {{ .Values.namespace.name | default "default" }}
-{{- end }}
-data:
-	`
 )
 
 // Run start the service here

@@ -1,4 +1,4 @@
-package files
+package main
 
 import (
 	"fmt"
@@ -7,8 +7,6 @@ import (
 )
 
 var (
-	// spacesToTab yaml format spaces in a ConfigMap
-	spacesToTab = "    "
 	// outputPath outputs folder, where all the files will be stored
 	outputPath = "./outputs/"
 	// configMapKind this is the header of the file, based on a Kubernetes ConfigMap
