@@ -62,10 +62,10 @@ func Run() {
 	// here is where we have to write the content to the new file, we've
 	// formated the lines that contains values
 	//fmt.Println(eachline)
-	fmt.Println(fileContent)
+	//fmt.Println(fileContent)
 
 	// TODO
-	writeToFile(fileNameCleaned, eachline)
+	writeToFile(fileNameCleaned, fileContent)
 }
 
 // formatLine change the current format to Helm Template
@@ -106,7 +106,7 @@ func cleanUpFileName(f string) string {
 // changeFileFormat change the file extension from toml to yaml
 func changeFileFormat(f string) string {
 	// change - to _ in the filename
-	f = strings.ReplaceAll(f, "toml", "yaml")
+	f = strings.ReplaceAll(f, "_toml", ".yaml")
 
 	return f
 }
@@ -124,14 +124,25 @@ func createFile(f string) {
 
 // writeToFile self description
 func writeToFile(f string, content []byte) {
+	// Change the file format to .yaml
+	f = changeFileFormat(f)
+
 	// create or verifyt that the file exists
 	createFile(f)
 
-	//w := bufio.NewWriter(f, content)
+	// Open the file
+	file, err := os.OpenFile(f, os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("ERROR creating the file: ", f, " ->", err)
+	}
 
-	//ioutil.
+	_, err2 := file.Write(content)
+	if err2 != nil {
+		fmt.Println("ERROR creating the file: ", f, " ->", err2)
+	}
 
-}
+	file.Close()
+
 
 // main everything starts here!
 func main() {
