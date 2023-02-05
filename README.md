@@ -44,8 +44,9 @@ go run *.go --file=example.tpml
 
 ## TODO
 
-- [ ] Add ConfigMap header
+- [x] Add ConfigMap header
 - [ ] Add tests 👀
+- [ ] Read all files inside a folder
 
 ---
 
