@@ -32,6 +32,7 @@ data:
 func Run() {
 	// filePath path to the file that we'll scan
 	file := flag.String("file", "", "Toml file to convert to Kubernetes ConfigMap")
+	// output := flag.String("output", &outputPath, "Output folder where the files will be stored")
 
 	flag.Parse()
 	// TODO
@@ -113,12 +114,15 @@ func ParseFiles(file string) {
 
 	// Clean up the file name
 	fileNameCleaned := cleanUpFileName(file)
+	fmt.Println("FILENAME: ", fileNameCleaned)
 
 	var fileContent []string
 
 	// Add the Kubernetes ConfigMap structure at top
-	configMapKind = strings.ReplaceAll(configMapKind, "CONFIGMAP_NAME", fileNameCleaned)
-	fileContent = append(fileContent, configMapKind)
+	cm := configMapKind
+	cm = strings.ReplaceAll(cm, "CONFIGMAP_NAME", fileNameCleaned)
+
+	fileContent = append(fileContent, cm)
 	// Add the data
 	dataCM := "  " + file + ": |" + "\n"
 	fileContent = append(fileContent, dataCM)
@@ -194,7 +198,7 @@ func ChangeFileExtension(f string) string {
 // CreateFullPath create the full path to the outputs
 func CreateFullPath(f string) error {
 	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
-		os.MkdirAll(outputPath, 0744)
+		os.MkdirAll(outputPath, 0764)
 	}
 	return nil
 }
