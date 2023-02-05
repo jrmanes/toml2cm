@@ -4,8 +4,10 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -33,9 +35,61 @@ func Run() {
 
 	flag.Parse()
 
-	ParseFiles(*file)
+	fi, err := os.Stat(*file)
+	if err != nil {
+		log.Fatalf("failed check the input file: %s", err)
+	}
+
+	// filesList -> in case of directory, we'll use this array to store the
+	// files on it.
+	var filesList []string
+
+	// Check if the input is a directory or a file
+	switch mode := fi.Mode(); {
+	case mode.IsDir():
+		filesList = FindFilesInPath(*file)
+	case mode.IsRegular():
+		ParseFiles(*file)
+	}
+
+	// if there's at least 1, we'll check the files
+	if len(filesList) > 0 {
+		for _, i := range filesList {
+			ParseFiles(i)
+		}
+	}
 }
 
+// FindFilesInPath it returns a list with all the files with .toml extension
+func FindFilesInPath(f string) []string {
+	// counter - how many files do we have
+	c := 0
+	var filesToProcess []string
+
+	files, err := ioutil.ReadDir(f)
+	if err != nil {
+		log.Fatalf("failed opening file: %s", err)
+	}
+
+	// find files in folder with Toml extension
+	for _, file := range files {
+		// Get the file extension
+		ext := filepath.Ext(file.Name())
+		// Check if the extension is .toml or .tml
+		if ext == ".toml" {
+			fmt.Println("File found to process: ", file.Name())
+			filesToProcess = append(filesToProcess, file.Name())
+			c = c + 1
+		}
+	}
+	fmt.Println("---------------------------")
+	fmt.Println("Total files to process: ", c)
+	fmt.Println("---------------------------")
+
+	return filesToProcess
+}
+
+// ParseFiles process the files and create the ConfigMaps
 func ParseFiles(file string) {
 	// Open file
 	f, err := os.Open(file)
@@ -144,7 +198,7 @@ func ChangeFileExtension(f string) string {
 // CreateFullPath create the full path to the outputs
 func CreateFullPath(f string) error {
 	if _, err := os.Stat(outputPath); os.IsNotExist(err) {
-		os.MkdirAll(outputPath, 0644)
+		os.MkdirAll(outputPath, 0744)
 	}
 	return nil
 }
@@ -154,7 +208,7 @@ func CreateFile(f string) {
 	// create the outputs folder before write the file
 	err1 := CreateFullPath(f)
 	if err1 != nil {
-		fmt.Println("ERROR creating the file: ", f, " ->", err1)
+		fmt.Println("ERROR creating the file (CreateFullPath): ", f, " ->", err1)
 	}
 
 	// add the file extension
