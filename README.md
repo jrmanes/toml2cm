@@ -45,8 +45,9 @@ go run *.go --file=example.toml
 ## TODO
 
 - [x] Add ConfigMap header
-- [ ] Add tests 👀
 - [x] Read all files inside a folder
+- [ ] Add tests 👀
+- [ ] Show help menu if there's no input
 
 ---
 
