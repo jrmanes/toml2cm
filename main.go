@@ -34,6 +34,8 @@ func Run() {
 	file := flag.String("file", "", "Toml file to convert to Kubernetes ConfigMap")
 
 	flag.Parse()
+	// TODO
+	// Check flags and show help if there's no input
 
 	fi, err := os.Stat(*file)
 	if err != nil {
@@ -83,7 +85,7 @@ func FindFilesInPath(f string) []string {
 		}
 	}
 	fmt.Println("---------------------------")
-	fmt.Println("Total files to process: ", c)
+	fmt.Printf("Total files to process: [%d]\n", c)
 	fmt.Println("---------------------------")
 
 	return filesToProcess
