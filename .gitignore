@@ -1,3 +1,4 @@
 *.yaml
 outputs/
 app.toml
+bin/
