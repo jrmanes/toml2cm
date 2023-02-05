@@ -138,13 +138,10 @@ func ParseFiles(file string) {
 
 		//fmt.Println(eachline)
 	}
+
 	// here is where we have to write the content to the new file, we've
 	// formated the lines that contains values
-	//fmt.Println(eachline)
-	//fmt.Println(fileContent)
-
 	WriteToFile(fileNameCleaned, fileContent)
-
 }
 
 // FormatLine change the current format to Helm Template
@@ -158,9 +155,6 @@ func FormatLine(line, fileName string) string {
 	// Replace the value of the variable to a Helm Template format
 	// the following lines add the content between quotes, we don't really need
 	// it in that way. -> pending to review
-	//line = strings.ReplaceAll(line, "= ", " = {{ .Values.configMaps."+fileName+"."+l+" | "+"default "+"\"")
-	//line = line + "\"" + " | quote }}"
-
 	line = strings.ReplaceAll(
 		line,
 		"= ",
